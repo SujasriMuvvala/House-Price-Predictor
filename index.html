@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>House Price Predictor</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+<!-- Leaflet Map -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>🏠 House Price Predictor</h2>
+
+<form method="POST">
+
+<input type="number" name="area" placeholder="Area (sq ft)" required>
+
+<input type="number" name="bedrooms" placeholder="Bedrooms" required>
+
+<input type="number" name="bathrooms" placeholder="Bathrooms" required>
+
+<input type="number" name="age" placeholder="Age of house" required>
+
+<button type="submit">Predict Price</button>
+
+</form>
+
+{% if price %}
+<div class="result">
+Predicted Price: ₹{{price}}
+</div>
+{% endif %}
+
+</div>
+
+<!-- Map -->
+<div id="map" style="height:400px; margin-top:30px;"></div>
+
+<script>
+var map = L.map('map').setView([17.3850, 78.4867], 13);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+var marker;
+
+map.on('click', function(e) {
+    if(marker){
+        map.removeLayer(marker);
+    }
+    marker = L.marker(e.latlng).addTo(map)
+        .bindPopup("Selected Location")
+        .openPopup();
+});
+</script>
+
+</body>
+
+</html>
